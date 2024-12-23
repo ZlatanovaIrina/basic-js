@@ -2,6 +2,26 @@ const { NotImplementedError } = require('../extensions/index.js');
 
 const MODERN_ACTIVITY = 15;
 const HALF_LIFE_PERIOD = 5730;
+const isValid = (value) => {
+  if (typeof value !== 'string') {
+    return false;
+  }
+
+  const valueToFloat = Number.parseFloat(value);
+  
+  if (!!valueToFloat === false) {
+    return false;
+  }
+
+  if (valueToFloat < 0) {
+    return false;
+  }
+
+  if (valueToFloat > MODERN_ACTIVITY) {
+    return false;
+  }
+  return true;
+}
 
 /**
  * Determine the age of archeological find by using
@@ -17,9 +37,18 @@ const HALF_LIFE_PERIOD = 5730;
  * dateSample('WOOT!') => false
  *
  */
-function dateSample(/* sampleActivity */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+function dateSample(sampleActivity) {
+
+  if (!isValid(sampleActivity)) {
+    return false;
+  }
+
+  const sampleActivityToFloat = parseFloat(sampleActivity);
+  const constantForTheReaction = Math.LN2 / HALF_LIFE_PERIOD;
+  const modernToSampleActivityRatio = MODERN_ACTIVITY / sampleActivityToFloat;
+  const ageOfTheSample = Math.ceil(Math.log(modernToSampleActivityRatio) / constantForTheReaction);
+
+  return(ageOfTheSample);
 }
 
 module.exports = {
