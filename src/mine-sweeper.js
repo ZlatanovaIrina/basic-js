@@ -1,3 +1,34 @@
+// class MatrixCell {
+
+//   setCell(cell) {
+//     this.cell = cell;
+//   }
+//   setSiblings(siblingArray = []) {
+//     [
+//      this.top, 
+//      this.topRight, 
+//      this.right,
+//      this.bottomRight,
+//      this.bottom,
+//      this.bottomLeft,
+//      this.left,
+//      this.topLeft
+//     ] = siblingArray;
+//   }
+//   getSiblings() {
+//     return [
+//       this.top, 
+//       this.topRight, 
+//       this.right,
+//       this.bottomRight,
+//       this.bottom,
+//       this.bottomLeft,
+//       this.left,
+//       this.topLeft
+//      ];
+//   }
+
+// }
 const { NotImplementedError } = require('../extensions/index.js');
 
 /**
@@ -23,9 +54,31 @@ const { NotImplementedError } = require('../extensions/index.js');
  *  [1, 1, 1]
  * ]
  */
-function minesweeper(/* matrix */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+function minesweeper(matrix) {
+
+  const getNumberOfMinesAroundCell = (matrix, index1, index2) => {
+
+    const cellSiblings = [
+      matrix[index1 - 1] ? matrix[index1 - 1][index2] : undefined,
+      matrix[index1 - 1] ? matrix[index1 - 1][index2 + 1] : undefined,
+      matrix[index1] ? matrix[index1][index2 + 1] : undefined,
+      matrix[index1 + 1] ? matrix[index1 + 1][index2 + 1] : undefined,
+      matrix[index1 + 1] ? matrix[index1 + 1][index2] : undefined,
+      matrix[index1 + 1] ? matrix[index1 + 1][index2 - 1] : undefined,
+      matrix[index1] ? matrix[index1][index2 - 1] : undefined,
+      matrix[index1 - 1] ? matrix[index1 - 1][index2 - 1] : undefined
+    ];
+    
+    return cellSiblings
+      .map((sibling) => sibling === true ? 1 : 0)
+      .reduce((sibling1, sibling2) => sibling1 + sibling2);
+  }
+  
+  return matrix.map((arr, index1, matrix) => {
+    return arr.map((el, index2, arr) => {
+        return (getNumberOfMinesAroundCell(matrix, index1, index2));
+    });
+  });
 }
 
 module.exports = {
